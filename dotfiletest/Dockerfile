@@ -12,7 +12,11 @@ RUN apt-get install -y git
 RUN apt-get install -y vim
 RUN apt-get install -y tmux
 
-RUN git clone http://github.com/keikun17/dotfiles /root/.dotfiles
+RUN git clone --recursive http://github.com/keikun17/dotfiles /root/.dotfiles
+RUN cd /root/.dotfiles && git submodule update --init --recursive && vim +PluginInstall +qall
+
+RUN ln -s /root/.dotfiles/vim /root/.vim
+RUN ln -s /root/.dotfiles/vim/vimrc /root/.vimrc
 
 RUN mkdir /var/run/sshd
 

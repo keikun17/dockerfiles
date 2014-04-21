@@ -17,11 +17,18 @@ RUN apt-get install -y tmux
 RUN git clone --recursive http://github.com/keikun17/dotfiles /root/.dotfiles
 RUN cd /root/.dotfiles && git submodule update --init --recursive
 
-# Install vim plugins
-RUN vim +PluginInstall +qall
+# Log folder
+RUN mkdir /root/logs
 
+USER root
+
+# Prepare dotfiles
 RUN ln -s /root/.dotfiles/vim /root/.vim
 RUN ln -s /root/.dotfiles/vim/vimrc /root/.vimrc
+
+# Install vim plugins
+RUN vim  -c "source /root/.vimrc" +PluginInstall +qall > /root/logs/vim_plugininstall.log
+# RUN vim +PluginInstall +qall > /root/logs/vim_plugininstall.log
 
 RUN mkdir /var/run/sshd
 
